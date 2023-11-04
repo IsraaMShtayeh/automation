@@ -36,18 +36,18 @@
 //     }
 //   }
 // }
- import 'cypress-file-upload';
+import 'cypress-file-upload';
 
 
- declare global{
-    namespace Cypress{
-    interface Chainable<Subject> {
-        getByCy: typeof getByCy
-        logout: typeof logout
+declare global {
+    namespace Cypress {
+        interface Chainable<Subject> {
+            getByCy: typeof getByCy
+            logout: typeof logout
+            login: typeof login
+        }
     }
-}}
-
-
+}
 function getByCy(field: string) {
     // return cy.get('[placeholder="'+field+'"]')
     return cy.get(`[placeholder=${field}]`)
@@ -58,6 +58,11 @@ function logout() {
     cy.get('.oxd-userdropdown-tab').click({ force: true });
     return cy.get('.oxd-dropdown-menu').contains('Logout').click({ force: true });
 }
+function login(username: string, password: string) {
+    cy.get(".oxd-input").first().type(username)
+    cy.get(".oxd-input").last().type(password)
+    return cy.get('button').click({ force: true })
+}
 Cypress.Commands.add('getByCy', getByCy)
 Cypress.Commands.add('logout', logout)
-
+Cypress.Commands.add('login', login)
